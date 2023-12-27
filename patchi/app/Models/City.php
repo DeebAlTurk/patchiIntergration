@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class orderCategory extends Model
+class City extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'title',
-        'description'
+    protected $fillable=[
+        'name',
+        'primary_email',
+        'cc_emails'
     ];
-
 
     //Relationships
     public function orders()
     {
-        return $this->hasMany(Orders::class, 'order_category_id');
+        return $this->hasMany(Orders::class, 'city_id');
     }
-
 }
