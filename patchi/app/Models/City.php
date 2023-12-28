@@ -14,6 +14,14 @@ class City extends Model
         'cc_emails'
     ];
 
+    function getCCEmails(){
+        return explode(';',$this->cc_emails);
+    }
+    function getAllEmails(){
+        $emails=$this->getCCEmails();
+        return array_push($emails,$this->primary_email);
+    }
+
     //Relationships
     public function orders()
     {

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderAdded;
+use App\Models\City;
+use App\Models\orderCategory;
 use App\Models\Orders;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailable;
 
 class OrdersController extends Controller
 {
@@ -20,11 +24,17 @@ class OrdersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        $cities=City::all();
+        $categories=orderCategory::all();
+        return view('orders.create',
+        [
+            'cities'=>$cities,
+            'categories'=>$categories
+        ]);
     }
 
     /**
@@ -35,7 +45,23 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $data= $request->validate(
+            [
+//                "policy_number"=>'',
+                "receiver_name"=>'required|string|min:1',
+                "order_category_id"=>'required|exists:order_categories,id|int',
+                "phone_number"=>'required|string|min:5',
+                "city_id"=>'required|int|exists:cities,id',
+                "address"=>'required|string',
+                "comment"=>'string',
+            ]
+        );
+       $data=\Arr::add($data,'policy_number',\Str::random(7));
+       $city=City::find($data['city_id']);
+       $order=Orders::create($data);
+       \Mail::to($city->primary_email)->cc($city->getCCEmails())->send(new OrderAdded(route('voyager.orders.show',$order)));
+       return redirect()->route('dashboard');
+
     }
 
     /**
