@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.patch-bg-color {
+   background-color: #a8981f!important;
+}

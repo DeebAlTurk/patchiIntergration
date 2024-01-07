@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\orderCategory;
 use App\Models\Orders;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class OrdersController extends Controller
 {
@@ -51,17 +52,21 @@ class OrdersController extends Controller
     {
         $data = $request->validate(
             [
-//                "policy_number"=>'',
+                "policy_number"=>'required|string|min:1',
                 "receiver_name" => 'required|string|min:1',
-                "order_category_id" => 'required|exists:order_categories,id|int',
-                "phone_number" => 'required|string|min:5',
+                "phone_number" => ['required','string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
                 "city_id" => 'required|int|exists:cities,id',
                 "address" => 'required|string',
                 "comment" => 'string',
+                "preferred_delivery_date" => 'string',
             ]
         );
-        $data = \Arr::add($data, 'policy_number', \Str::random(7));
         $data = \Arr::add($data, 'user_id', \Auth::user()->id);
+        $data = \Arr::add($data, 'status', 'Open');
+        $data = \Arr::add($data, 'order_category_id', \Auth::user()->order_category_id);
+        $data = \Arr::add($data, 'supervisor', 'unassigned');
+
+
         $city = City::find($data['city_id']);
         $order = Orders::create($data);
         $order->orderStatuses()->create(

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +23,7 @@ class User extends \TCG\Voyager\Models\User
         'name',
         'email',
         'password',
+        'order_category_id',
     ];
 
     /**
@@ -45,5 +47,9 @@ class User extends \TCG\Voyager\Models\User
     public function orders(): HasMany
     {
         return $this->hasMany(Orders::class, 'user_id');
+    }
+    public function order_category(): BelongsTo
+    {
+        return $this->belongsTo(orderCategory::class);
     }
 }

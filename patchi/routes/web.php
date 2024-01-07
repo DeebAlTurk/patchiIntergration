@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard',['orders'=>Auth::user()->orders]);
+    return view('dashboard',['orders'=>Auth::user()->orders()->orderBy('created_at','desc')->get()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

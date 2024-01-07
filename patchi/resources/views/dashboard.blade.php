@@ -13,25 +13,27 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-3 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
                     <div class="flex flex-col">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                            <div class="inline-block min-w-full py-2 sm:px-3 lg:px-8">
                                 <div class="overflow-hidden">
                                     <table class="min-w-full text-left text-sm font-light">
                                         <thead class="border-b font-medium dark:border-neutral-500">
                                         <tr>
-                                            <th scope="col" class="px-6 py-4">Policy Number</th>
-                                            <th scope="col" class="px-6 py-4">Category</th>
-                                            <th scope="col" class="px-6 py-4">Receiver Name</th>
-                                            <th scope="col" class="px-6 py-4">Phone Number</th>
-                                            <th scope="col" class="px-6 py-4">City</th>
-                                            <th scope="col" class="px-6 py-4">Address</th>
-                                            <th scope="col" class="px-6 py-4">Comment</th>
-                                            <th scope="col" class="px-6 py-4">Status</th>
+                                            <th scope="col" class=" py-4">Policy Number</th>
+                                            <th scope="col" class=" py-4">Category</th>
+                                            <th scope="col" class=" py-4">Receiver Name</th>
+                                            <th scope="col" class=" py-4">Phone Number</th>
+                                            <th scope="col" class=" py-4">City</th>
+                                            <th scope="col" class=" py-4">Address</th>
+                                            <th scope="col" class=" py-4">Comment</th>
+                                            <th scope="col" class=" py-4">Preferred Delivery Date</th>
+                                            <th scope="col" class=" py-4">Status</th>
+                                            <th scope="col" class=" py-4">Supervisor</th>
 
                                         </tr>
                                         </thead>
@@ -40,14 +42,16 @@
                                             @foreach($orders as $order)
                                                 <tr
                                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{$order->policy_number}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->order_category->title}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->receiver_name}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->phone_number}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->city->name}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->address}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->comment}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$order->orderStatuses->first()?->status}}</td>
+                                                    <td class="whitespace-nowrap  py-4 font-medium">{{$order->policy_number}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->user->order_category->title}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->receiver_name}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->phone_number}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->city->name}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->address}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->comment}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->preferred_delivery_date->format('M d Y')}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->status}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->supervisor}}</td>
 
                                                 </tr>
                                             @endforeach
