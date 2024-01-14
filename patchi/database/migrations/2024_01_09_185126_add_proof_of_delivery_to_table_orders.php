@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\orderCategory::class)->nullable();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->string('proof_of_delivery',400)->nullable();
         });
     }
 
@@ -25,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropConstrainedForeignIdFor(\App\Models\orderCategory::class);
-            $table->dropForeignIdFor(\App\Models\orderCategory::class);
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('proof_of_delivery');
         });
     }
 };

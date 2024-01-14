@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    $pdf = PDF::loadView('pdfs.delivery');
+//    return $pdf->download('pdfview.pdf');
     return view('welcome');
 });
 
