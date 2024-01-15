@@ -2,35 +2,51 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Mail\OrderAdded;
 use App\Mail\OrderUpdated;
 use App\Models\City;
 use App\Models\Orders;
-use App\Models\orderStatus;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\SmsCode;
 use Illuminate\Http\Request;
 use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 
 class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseController
 {
     public function update(Request $request, $id)
     {
-        $order=Orders::find($id);
-        if ($request->has('status')){
-            $orderStatusNew=$order->orderStatuses()->where('status',$request->get('status'))->get();
-            if ($orderStatusNew->isEmpty()){
-                $orderStatusNew=$order->orderStatuses()->create([
-                    'status'=>$request->get('status'),
-                    'supervisor'=>$order->supervisor
+
+        $order = Orders::find($id);
+        $newOrderStatus=$request->get('status');
+        switch ($newOrderStatus) {
+            case 'Delivered':
+                $request->validate([
+                    'sms_code'=>'required|string|min:6|max:6'
                 ]);
-                \Mail::to($order->city->primary_email)->cc($order->city->getCCEmails())->send(new OrderUpdated(route('voyager.orders.show', $order)));
-            }
+                if (!$order->validateSMS($request->get('sms_code'))){
+                   return back()->with($this->alertError('SMS Code not Valid'));
+                }
+                break;
+            case 'Shipped':
+                if ($order->status!=='Shipped' && $order->status!=='Delivered'){
+                    SmsCode::createViaOrder($order);
+                }
+                break;
+            default:
+                break;
         }
-        return parent::update($request,$id);
+
+
+        //Check Status for Status Logging
+        $orderStatusNew = $order->orderStatuses()->where('status', $request->get('status'))->get();
+        if ($orderStatusNew->isEmpty()) {
+            $orderStatusNew = $order->orderStatuses()->create([
+                'status' => $request->get('status'),
+                'supervisor' => $order->supervisor
+            ]);
+            \Mail::to($order->city->primary_email)->cc($order->city->getCCEmails())->send(new OrderUpdated(route('voyager.orders.show', $order)));
+        }
+        return parent::update($request, $id);
     }
 
     /**
@@ -56,9 +72,9 @@ class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseCon
         $city = City::find($request->get('city_id'));
         $data->orderStatuses()->create(
             [
-                'order_id'=>$data->id,
-                'status'=>"Open",
-                'supervisor'=>'unassigned'
+                'order_id' => $data->id,
+                'status' => "Open",
+                'supervisor' => 'unassigned'
             ]
         );
         \Mail::to($city->primary_email)->cc($city->getCCEmails())->send(new OrderAdded(route('voyager.orders.show', $data)));
@@ -73,7 +89,7 @@ class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseCon
             }
 
             return $redirect->with([
-                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'message' => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
             ]);
         } else {
