@@ -29,7 +29,10 @@ class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseCon
                 break;
             case 'Shipped':
                 if ($order->status!=='Shipped' && $order->status!=='Delivered'){
-                    SmsCode::createViaOrder($order);
+                    $smsOrder=SmsCode::createViaOrder($order);
+                    $smsOrder?->sendSmsMessage();
+                }else{
+                    return back()->with($this->alertError('Please Update Status to Delivered and enter the Verification Code'));
                 }
                 break;
             default:

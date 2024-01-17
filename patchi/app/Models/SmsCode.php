@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Unifonic;
 
 class SmsCode extends Model
 {
@@ -48,4 +49,16 @@ class SmsCode extends Model
     {
         return $this->belongsTo(Orders::class);
     }
+   public function sendSmsMessage(){
+        $message="Your Deliver code is $this->code it is valid till $this->valid_till";
+        $recipient=$this->orders->phone_number;
+       try {
+           Unifonic::send($recipient,$message);
+       }catch (\Exception $exception){
+           return false;
+       }
+       return true;
+
+
+   }
 }

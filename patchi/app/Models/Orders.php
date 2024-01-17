@@ -28,7 +28,7 @@ class Orders extends Model
 
     ];
     protected $casts=
-        ['preferred_delivery_date'=>"datetime"];
+        ['preferred_delivery_date'=>"datetime",'phone_number' => 'integer'];
 
     //relationships
     public function update(array $attributes = [], array $options = [])
