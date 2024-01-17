@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OrderAdded;
+use App\Mail\OrderUpdated;
 use App\Models\City;
 use App\Models\orderCategory;
 use App\Models\Orders;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -58,7 +60,7 @@ class OrdersController extends Controller
                 "city_id" => 'required|int|exists:cities,id',
                 "address" => 'required|string',
                 "comment" => 'string',
-                "preferred_delivery_date" => 'string',
+                "preferred_delivery_date" => 'required|date|after:tomorrow',
             ]
         );
         $data = \Arr::add($data, 'user_id', \Auth::user()->id);
@@ -95,12 +97,13 @@ class OrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Orders $orders
+     * @param \App\Models\Orders $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Orders $orders)
+    public function edit(Orders $order)
     {
-        //
+        $cites=City::all();
+        return view('orders.edit',['order' => $order,'cities' => $cites]);
     }
 
     /**
@@ -110,9 +113,28 @@ class OrdersController extends Controller
      * @param \App\Models\Orders $orders
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Orders $orders)
+    public function update(Request $request, Orders $order)
     {
-        //
+        if ($order->status==='Invalid'&&$request->user()->id===$order->user_id){
+            $data = $request->validate(
+                [
+                    "policy_number"=>'string|min:1',
+                    "receiver_name" => 'string|min:1',
+                    "phone_number" => ['string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
+                    "city_id" => 'exists:cities,id',
+                    "address" => 'string',
+                    "comment" => 'string',
+                    "preferred_delivery_date" => 'date',
+                ]
+            );
+            $order->update($data);
+            if ($order->wasChanged()){
+                $order->update(['status'=>'Open']);
+                \Mail::to($order->city->primary_email)->cc($order->city->getCCEmails())->send(new OrderUpdated(route('voyager.orders.show', $order)));
+            }
+        }
+        return redirect()->route('dashboard');
+
     }
 
     /**

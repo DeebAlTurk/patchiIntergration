@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Orders::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status',['Open','Under process','Shipped','Delivered'])->default('Open');
+            $table->enum('status',['Open','Under process','Shipped','Delivered','Invalid'])->default('Open');
             $table->string('supervisor');
             $table->timestamps();
         });

@@ -16,7 +16,6 @@
         <div class="max-w-7xl mx-auto sm:px-3 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
                     <div class="flex flex-col">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 sm:px-3 lg:px-8">
@@ -35,12 +34,16 @@
                                             <th scope="col" class=" py-4">Status</th>
                                             <th scope="col" class=" py-4">Supervisor</th>
 
+
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @if($orders)
                                             @foreach($orders as $order)
-                                                <tr
+                                                <tr @class([
+        'bg-green-300'=>$order->sms_code_confirmation,
+        'bg-red-300'=>$order->status==='Invalid'
+])
                                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                                     <td class="whitespace-nowrap  py-4 font-medium">{{$order->policy_number}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->user->order_category->title}}</td>
@@ -52,6 +55,12 @@
                                                     <td class="whitespace-nowrap  py-4">{{$order->preferred_delivery_date->format('M d Y')}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->status}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->supervisor}}</td>
+                                                    @if($order->status==='Invalid')
+                                                        <td class="whitespace-nowrap  py-4">
+                                                            <form action="{{route('orders.edit',$order)}}"><x-danger-button>Required Edit</x-danger-button></form>
+                                                        </td>
+
+                                                    @endif
 
                                                 </tr>
                                             @endforeach

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->enum('status',['Open','Under process','Shipped','Delivered'])->default('Open');
+            $table->enum('status',['Open','Under process','Shipped','Delivered','Invalid'])->default('Open');
             $table->dateTime('preferred_delivery_date');
         });
     }
