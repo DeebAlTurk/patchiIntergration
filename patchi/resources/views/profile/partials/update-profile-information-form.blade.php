@@ -12,7 +12,11 @@
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
-
+    <br>
+    <div>
+        <x-input-label :value="__('Username')" />
+        <x-text-input disabled value="{{Auth::user()->username}}"  type="text" class="mt-1 block w-full disabled:opacity-25"    />
+    </div>
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
