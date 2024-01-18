@@ -13,9 +13,13 @@ use TCG\Voyager\Facades\Voyager;
 
 class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseController
 {
+    public function export(){
+        $orders=Orders::latest()->get();
+
+        return $orders;
+    }
     public function update(Request $request, $id)
     {
-
         $order = Orders::find($id);
         $newOrderStatus=$request->get('status');
         switch ($newOrderStatus) {

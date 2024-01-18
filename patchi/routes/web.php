@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\adminOrdersController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard',['orders'=>Auth::user()->orders()->orderBy('created_at','desc')->get()]);
+    return view('dashboard', ['orders' => Auth::user()->orders()->orderBy('created_at', 'desc')->get()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -32,9 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/orders', OrdersController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::get('/orders/export', [adminOrdersController::class, 'export'])->name('voyager.orders.export')->middleware('admin.user');
     Voyager::routes();
 });

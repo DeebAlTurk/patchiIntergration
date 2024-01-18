@@ -32,7 +32,6 @@
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/symfony/polyfill-intl-grapheme" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/guzzlehttp/psr7" />
-      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/guzzlehttp/promises" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/voku/portable-ascii" />
@@ -65,7 +64,6 @@
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/sebastian/lines-of-code" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/sebastian/global-state" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/sebastian/exporter" />
-      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/laravel/ui" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/psr/cache" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/tcg/voyager" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/intervention/image" />
@@ -144,6 +142,15 @@
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/spatie/ignition" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/spatie/laravel-ignition" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/multicaret/laravel-unifonic" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/ezyang/htmlpurifier" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/maatwebsite/excel" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/maennchen/zipstream-php" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/markbaker/matrix" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/myclabs/php-enum" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/psy/psysh" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/laravel/ui" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
