@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\OrdersExport;
 use App\Mail\OrderAdded;
 use App\Mail\OrderUpdated;
 use App\Models\City;
 use App\Models\Orders;
 use App\Models\SmsCode;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
 
 class adminOrdersController extends \TCG\Voyager\Http\Controllers\VoyagerBaseController
 {
     public function export(){
-        $orders=Orders::latest()->get();
-
-        return $orders;
+        return Excel::download(new OrdersExport(), "orders".now()->timestamp.".xlsx");
     }
     public function update(Request $request, $id)
     {

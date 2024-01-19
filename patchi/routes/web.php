@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-//    $pdf = PDF::loadView('pdfs.delivery');
-//    return $pdf->download('pdfview.pdf');
-    return view('welcome');
-});
+//Route::get('/', function () {
+////    $pdf = PDF::loadView('pdfs.delivery');
+////    return $pdf->download('pdfview.pdf');
+//    return view('welcome');
+//});
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard', ['orders' => Auth::user()->orders()->orderBy('created_at', 'desc')->get()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
