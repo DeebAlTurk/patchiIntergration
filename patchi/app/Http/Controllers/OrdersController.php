@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderAdded;
 use App\Mail\OrderUpdated;
 use App\Models\City;
+use App\Models\District;
 use App\Models\orderCategory;
 use App\Models\Orders;
 use App\Models\User;
@@ -31,11 +32,11 @@ class OrdersController extends Controller
     public function create()
     {
         if (\Auth::user()->hasRole('user')) {
-            $cities = City::all();
+            $districts = District::with('city')->get()->sortBy('city.name');
             $categories = orderCategory::all();
             return view('orders.create',
                 [
-                    'cities' => $cities,
+                    'districts' => $districts,
                     'categories' => $categories
                 ]);
 
@@ -57,7 +58,7 @@ class OrdersController extends Controller
                 "policy_number"=>'required|string|min:1',
                 "receiver_name" => 'required|string|min:1',
                 "phone_number" => ['required','string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
-                "city_id" => 'required|int|exists:cities,id',
+                "district_id" => 'required|int|exists:districts,id',
                 "address" => 'required|string',
                 "comment" => 'string',
                 "preferred_delivery_date" => 'required|date|after:tomorrow',
@@ -69,7 +70,7 @@ class OrdersController extends Controller
         $data = \Arr::add($data, 'supervisor', 'unassigned');
 
 
-        $city = City::find($data['city_id']);
+        $city = District::find($data['district_id'])->city;
         $order = Orders::create($data);
         $order->orderStatuses()->create(
             [

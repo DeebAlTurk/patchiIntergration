@@ -28,6 +28,7 @@
                                             <th scope="col" class=" py-4">Receiver Name</th>
                                             <th scope="col" class=" py-4">Phone Number</th>
                                             <th scope="col" class=" py-4">City</th>
+                                            <th scope="col" class=" py-4">District</th>
                                             <th scope="col" class=" py-4">Address</th>
                                             <th scope="col" class=" py-4">Comment</th>
                                             <th scope="col" class=" py-4">Preferred Delivery Date</th>
@@ -50,6 +51,7 @@
                                                     <td class="whitespace-nowrap  py-4">{{$order->receiver_name}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->phone_number}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->city->name}}</td>
+                                                    <td class="whitespace-nowrap  py-4">{{$order->district->name}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->address}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->comment}}</td>
                                                     <td class="whitespace-nowrap  py-4">{{$order->preferred_delivery_date->format('M d Y')}}</td>

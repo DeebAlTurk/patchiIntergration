@@ -17,7 +17,7 @@ class Orders extends Model
         "receiver_name",
         "order_category_id",
         "phone_number",
-        "city_id",
+        "district_id",
         "address",
         "comment",
         "delivery_providers_id",
@@ -62,9 +62,13 @@ class Orders extends Model
         return $this->belongsTo(orderCategory::class);
     }
 
-    public function city()
+    public function district(): BelongsTo
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(District::class);
+    }
+
+    public function city(){
+        return $this->district->city();
     }
 
     public function orderStatuses(): HasMany

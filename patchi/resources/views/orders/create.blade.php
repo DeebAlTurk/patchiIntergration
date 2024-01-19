@@ -37,15 +37,15 @@
 
                         <!-- City Select -->
                         <div class="mb-4">
-                            <label for="city_id" class="my-2 block text-sm font-medium dark:text-white">City</label>
-                            <select required id="city_id" name="city_id"
+                            <label for="district_id" class="my-2 block text-sm font-medium dark:text-white">District</label>
+                            <select required id="district_id" name="district_id"
                                     class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                @foreach($cities as $city)
-                                    <option @selected(old('city_id') == $city->id) value="{{$city->id}}">{{$city->name}}</option>
+                                @foreach($districts as $district)
+                                    <option @selected(old('district_id') == $district->id) value="{{$district->id}}">{{$district->city->name}} - {{$district->name}}</option>
                             @endforeach
                                 <!-- Add more options as needed -->
                             </select>
-                            <x-input-error :messages="$errors->get('city_id')"></x-input-error>
+                            <x-input-error :messages="$errors->get('district_id')"></x-input-error>
 
                         </div>
 

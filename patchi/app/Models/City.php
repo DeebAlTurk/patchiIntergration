@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -26,5 +27,9 @@ class City extends Model
     public function orders()
     {
         return $this->hasMany(Orders::class, 'city_id');
+    }
+    public function districts(): HasMany
+    {
+        return $this->hasMany(District::class, 'city_id');
     }
 }
