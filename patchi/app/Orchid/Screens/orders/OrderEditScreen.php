@@ -2,7 +2,9 @@
 
 namespace App\Orchid\Screens\orders;
 
+use App\Mail\OrderUpdated;
 use App\Models\Orders;
+use App\Models\SmsCode;
 use App\Models\User;
 use App\Orchid\Layouts\orders\OrderEditLeftLayout;
 use App\Orchid\Layouts\orders\OrderEditRightLayout;
@@ -11,6 +13,7 @@ use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
@@ -126,10 +129,56 @@ class OrderEditScreen extends Screen
        $data=$data['order'];
        $user=User::find($data['user_id']);
        $data=\Arr::add($data,'order_category_id',$user->order_category_id);
+
+       if ($orders->isClean()){
+
+           $newOrderStatus=$data['status'];
+           switch ($newOrderStatus) {
+               case 'Delivered':
+                   $request->validate([
+                       'sms_code'=>'required|string|min:6|max:6'
+                   ]);
+                   if (!$orders->validateSMS($request->input('sms_code'))){
+                       Toast::warning('SMS Code not Valid');
+                       return back();
+                   }
+                   break;
+               case 'Shipped':
+                   if ($orders->status!=='Shipped' && $orders->status!=='Delivered'){
+                       $smsOrder=SmsCode::createViaOrder($orders);
+                       if ($smsOrder?->sendSmsMessage()){
+                           Alert::info('SMS Sent Successful');
+                       }else{
+                           Alert::error('Unable to Send SMS');
+                       }
+
+                   }else{
+                       Toast::warning('Please Update Status to Delivered and enter the Verification Code');
+                       return back();
+                   }
+                   break;
+               default:
+                   break;
+           }
+
+
+           //Check Status for Status Logging
+           $orderStatusNew = $orders->orderStatuses()->where('status', $data['status'])->get();
+           if ($orderStatusNew->isEmpty()) {
+               $orderStatusNew = $orders->orderStatuses()->create([
+                   'status' => $data['status'],
+                   'supervisor' => $orders->supervisor
+               ]);
+               \Mail::to($orders->city->primary_email)->cc($orders->city->getCCEmails())->send(new OrderUpdated(route('platform.orders.edit', $orders)));
+
+           }
+
+       }
+
        $orders->fill($data);
        $orders->save();
         Toast::info(__('Order was saved.'));
 
-        return redirect()->route('platform.systems.users');
+        return redirect()->route('platform.orders.list');
     }
 }

@@ -86,6 +86,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
                 ->title(__('Access rights')),
+            Menu::make(__('Order'))
+                ->icon('docs')
+                ->route('platform.orders.list')
+                ->title(__('Orders')),
 
             Menu::make(__('Roles'))
                 ->icon('lock')

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
 use Orchid\Screen\AsSource;
 
 class City extends Model
@@ -26,6 +27,12 @@ class City extends Model
         $emails=$this->getCCEmails();
         return array_push($emails,$this->primary_email);
     }
+
+    protected $allowedFilters = [
+        'name'=>Like::class,
+        'primary_email'=>Like::class,
+        'cc_emails'=>Like::class,
+    ];
 
     //Relationships
     public function orders()

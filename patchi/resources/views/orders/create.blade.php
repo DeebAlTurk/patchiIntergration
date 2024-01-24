@@ -35,7 +35,7 @@
 
                         </div>
 
-                        <!-- City Select -->
+                        <!--  Select -->
                         <div class="mb-4">
                             <label for="district_id" class="my-2 block text-sm font-medium dark:text-white">District</label>
                             <select required id="district_id" name="district_id"
@@ -46,6 +46,19 @@
                                 <!-- Add more options as needed -->
                             </select>
                             <x-input-error :messages="$errors->get('district_id')"></x-input-error>
+
+                        </div>
+                        <!--  Select -->
+                        <div class="mb-4">
+                            <label for="delivery_providers_id" class="my-2 block text-sm font-medium dark:text-white">Delivery Provider</label>
+                            <select required id="delivery_providers_id" name="delivery_providers_id"
+                                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                @foreach($deliveryProviders as $provider)
+                                    <option @selected(old('delivery_providers_id') == $provider->id) value="{{$provider->id}}">{{$provider->title}}</option>
+                            @endforeach
+                            <!-- Add more options as needed -->
+                            </select>
+                            <x-input-error :messages="$errors->get('delivery_providers_id')"></x-input-error>
 
                         </div>
 

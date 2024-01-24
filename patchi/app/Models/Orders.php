@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
+use Orchid\Filters\Types\Where;
+use Orchid\Filters\Types\WhereBetween;
+use Orchid\Filters\Types\WhereIn;
 use Orchid\Screen\AsSource;
+use Orchid\Screen\Fields\DateTimer;
 
 class Orders extends Model
 {
@@ -32,6 +37,38 @@ class Orders extends Model
         'proof_of_delivery'
 
     ];
+    protected $allowedFilters = [
+        "user_id"=>Where::class,
+        "policy_number"=>Like::class,
+        "receiver_name"=>Like::class,
+        "order_category_id"=>Where::class,
+        "phone_number"=>Like::class,
+        "district_id"=>Like::class,
+        "address"=>Like::class,
+        "comment"=>Like::class,
+        "delivery_providers_id"=>Where::class,
+        "status"=>Where::class,
+        "supervisor"=>Like::class,
+        'sms_code_confirmation'=>Like::class,
+        'proof_of_delivery'=>Like::class,
+    ];
+    protected $allowedSorts = [
+        "user_id",
+        "policy_number",
+        "receiver_name",
+        "order_category_id",
+        "phone_number",
+        "district_id",
+        "address",
+        "comment",
+        "delivery_providers_id",
+        "status",
+        "preferred_delivery_date",
+        "supervisor",
+        'sms_code_confirmation',
+        'proof_of_delivery'
+    ];
+
     protected $casts=
         ['preferred_delivery_date'=>"datetime",'phone_number' => 'integer'];
 
@@ -95,5 +132,10 @@ class Orders extends Model
     public function LatestSmsCode(){
         return $this->ActiveSmsCodes()->latest()->first();
     }
+    public function delivery_providers(): BelongsTo
+    {
+        return $this->belongsTo(DeliveryProviders::class);
+    }
+
 
 }

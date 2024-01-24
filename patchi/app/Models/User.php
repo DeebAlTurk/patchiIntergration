@@ -77,4 +77,12 @@ class User extends Authenticatable
         'username',
         'order_category_id'
     ];
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Orders::class, 'user_id');
+    }
+    public function order_category(): BelongsTo
+    {
+        return $this->belongsTo(orderCategory::class);
+    }
 }

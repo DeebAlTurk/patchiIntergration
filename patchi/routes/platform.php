@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\orders\OrderEditScreen;
+use App\Orchid\Screens\orders\OrderListScreen;
 use App\Orchid\Screens\OrdersScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
@@ -91,8 +93,11 @@ Route::screen('roles', RoleListScreen::class)
 //Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
 
 // Orders
-Route::screen('orders/create', \App\Orchid\Screens\orders\OrderEditScreen::class)->name('platform.orders.create');
-Route::screen('orders/{order}/edit', \App\Orchid\Screens\orders\OrderEditScreen::class)->name('platform.orders.edit');
+Route::screen('orders/create', OrderEditScreen::class)->name('platform.orders.create');
+Route::screen('orders/{order}/edit', OrderEditScreen::class)->name('platform.orders.edit');
+Route::screen('orders/list', OrderListScreen::class)->name('platform.orders.list');
+Route::get('orders/export', [\App\Http\Controllers\Admin\adminOrdersController::class,'export'])->name('platform.orders.export');
+
 
 
 

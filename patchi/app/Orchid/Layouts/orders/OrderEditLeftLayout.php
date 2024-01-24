@@ -47,6 +47,9 @@ class OrderEditLeftLayout extends Rows
                 ->placeholder('Please Enter the Delivery Provider'),
             CheckBox::make('order.sms_code_confirmation')
                 ->sendTrueOrFalse()->disabled()->title('SMS Confirmation'),
+            Input::make('sms_code')
+                ->maxlength(6)
+                ->title('SMS Confirmation Code'),
         ];
     }
 }

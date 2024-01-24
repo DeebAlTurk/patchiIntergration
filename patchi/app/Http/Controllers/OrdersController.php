@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderAdded;
 use App\Mail\OrderUpdated;
 use App\Models\City;
+use App\Models\DeliveryProviders;
 use App\Models\District;
 use App\Models\orderCategory;
 use App\Models\Orders;
@@ -37,6 +38,7 @@ class OrdersController extends Controller
             $categories = orderCategory::all();
             return view('orders.create',
                 [
+                    'deliveryProviders' => DeliveryProviders::all(),
                     'districts' => $districts,
                     'categories' => $categories
                 ]);
@@ -60,6 +62,7 @@ class OrdersController extends Controller
                 "receiver_name" => 'required|string|min:1',
                 "phone_number" => ['required','string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
                 "district_id" => 'required|int|exists:districts,id',
+                "delivery_providers_id" => 'required|int|exists:delivery_providers,id',
                 "address" => 'required|string',
                 "comment" => 'string',
                 "preferred_delivery_date" => 'required|date|after:tomorrow',
@@ -80,7 +83,7 @@ class OrdersController extends Controller
                 'supervisor'=>'unassigned'
             ]
         );
-        \Mail::to($city->primary_email)->cc($city->getCCEmails())->send(new OrderAdded(route('voyager.orders.show', $order)));
+        \Mail::to($city->primary_email)->cc($city->getCCEmails())->send(new OrderAdded(route('platform.orders.edit', $order)));
         return redirect()->route('dashboard');
 
     }

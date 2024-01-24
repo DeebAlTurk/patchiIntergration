@@ -2,11 +2,13 @@
 
 namespace App\Orchid\Resources;
 
-use App\Models\orderCategory;
 use App\Models\Orders;
 use App\Models\orderStatus;
 use Orchid\Crud\Resource;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
+use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
 class OrdersStatusResource extends Resource
@@ -28,7 +30,16 @@ class OrdersStatusResource extends Resource
         return [
             Relation::make('orders_id')
                 ->fromModel(Orders::class, 'id')
-                ->title('Order')
+                ->title('Order')->required(),
+            Select::make('order.status')->options([
+                'Open' => 'Open',
+                'Under process' => 'Under process',
+                'Shipped' => 'Shipped',
+                'Delivered' => 'Delivered',
+                'Invalid' => 'Invalid',
+            ])->title('Select a Status')->required(),
+            Input::make('order.supervisor')->required()
+                ->placeholder('Please enter the supervisor of the current status')
         ];
     }
 
@@ -41,6 +52,13 @@ class OrdersStatusResource extends Resource
     {
         return [
             TD::make('id'),
+            TD::make('order_id')->render(function (orderStatus $status) {
+                return $status->orders->id;
+            }),
+            TD::make('status'),
+            TD::make('supervisor'),
+
+
 
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
@@ -61,7 +79,16 @@ class OrdersStatusResource extends Resource
      */
     public function legend(): array
     {
-        return [];
+        return [
+
+            Sight::make('id', 'ID'),
+            Sight::make('order_id', 'Order Id')->render(function (orderStatus $status) {
+                return $status->orders->id;
+            }),
+            Sight::make('status', 'Status'),
+            Sight::make('supervisor', 'Supervisor')
+
+        ];
     }
 
     /**
