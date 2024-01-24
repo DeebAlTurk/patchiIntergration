@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class Orders extends Model
 {
-    use HasFactory;
+    use HasFactory,AsSource, Filterable, Attachable;
+
 
     protected $fillable = [
         "user_id",
@@ -24,7 +28,8 @@ class Orders extends Model
         "status",
         "preferred_delivery_date",
         "supervisor",
-        'sms_code_confirmation'
+        'sms_code_confirmation',
+        'proof_of_delivery'
 
     ];
     protected $casts=

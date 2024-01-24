@@ -11,6 +11,7 @@ use App\Models\Orders;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Orchid\Platform\Models\Role;
 
 class OrdersController extends Controller
 {
@@ -31,7 +32,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasRole('user')) {
+        if (\Auth::user()->inRole('user')) {
             $districts = District::with('city')->get()->sortBy('city.name');
             $categories = orderCategory::all();
             return view('orders.create',

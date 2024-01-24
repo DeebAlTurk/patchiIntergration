@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if(Auth::user()->hasRole('user'))
+                    @if(Auth::user()->inRole('user'))
                         <x-nav-link :href="route('orders.create')" :active="request()->routeIs('add-order')">
                             {{ __('Add Order') }}
                         </x-nav-link>

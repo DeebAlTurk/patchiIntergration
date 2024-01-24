@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "multicaret/laravel-unifonic": "^2.1",
-        "tcg/voyager": "^1.7"
+        "orchid/crud": "3.9.0",
+        "orchid/platform": "13.9.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

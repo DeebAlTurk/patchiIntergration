@@ -35,8 +35,3 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/orders/export', [adminOrdersController::class, 'export'])->name('voyager.orders.export')->middleware('admin.user');
-    Voyager::routes();
-});

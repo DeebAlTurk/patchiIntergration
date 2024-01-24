@@ -2,55 +2,79 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Orchid\Presenters\UserPresenter;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
+use Orchid\Platform\Models\User as Authenticatable;
+use Orchid\Screen\AsSource;
 
-class User extends \TCG\Voyager\Models\User
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use AsSource, Attachable, Filterable;
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'order_category_id',
+        'permissions',
         'username',
+        'order_category_id'
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes excluded from the model's JSON form.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'permissions',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'permissions'          => 'array',
+        'email_verified_at'    => 'datetime',
     ];
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Orders::class, 'user_id');
-    }
-    public function order_category(): BelongsTo
-    {
-        return $this->belongsTo(orderCategory::class);
-    }
+
+    /**
+     * The attributes for which you can use filters in url.
+     *
+     * @var array
+     */
+    protected $allowedFilters = [
+        'id',
+        'name'=>Like::class,
+        'email'=>Like::class,
+        'permissions',
+        'username'=>Like::class,
+        'order_category_id'
+    ];
+
+    /**
+     * The attributes for which can use sort in url.
+     *
+     * @var array
+     */
+    protected $allowedSorts = [
+        'id',
+        'name',
+        'email',
+        'updated_at',
+        'created_at',
+        'username',
+        'order_category_id'
+    ];
 }

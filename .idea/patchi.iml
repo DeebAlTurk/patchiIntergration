@@ -151,6 +151,13 @@
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/myclabs/php-enum" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/laravel/ui" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/orchid/blade-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/orchid/icons" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/orchid/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/watson/active" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/tabuna/breadcrumbs" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/laravel/scout" />
+      <excludeFolder url="file://$MODULE_DIR$/patchi/vendor/orchid/crud" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
