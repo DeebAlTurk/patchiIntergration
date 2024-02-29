@@ -30,7 +30,7 @@
                         <!-- Phone Number -->
                         <div class="mb-4">
                             <x-input-label for="phone_number" class="my-2">Phone Number</x-input-label>
-                            <x-text-input  value="{{old('phone_number')}}" required  type="tel" id="phone_number" name="phone_number" class="w-full"></x-text-input>
+                            <x-text-input  value="{{old('phone_number')}}" required  type="tel" id="phone_number" name="phone_number" placeholder="966xxxxxxxx" class="w-full"></x-text-input>
                             <x-input-error :messages="$errors->get('phone_number')"></x-input-error>
 
                         </div>
