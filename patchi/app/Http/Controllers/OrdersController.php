@@ -60,7 +60,7 @@ class OrdersController extends Controller
             [
                 "policy_number"=>'required|string|min:1',
                 "receiver_name" => 'required|string|min:1',
-                "phone_number" => ['required','string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
+                "phone_number" => ['required', 'string', 'min:1', 'regex:/^(?:966|00966|0)(5\d(?:\s?\d){7})$/'],
                 "district_id" => 'required|int|exists:districts,id',
                 "delivery_providers_id" => 'required|int|exists:delivery_providers,id',
                 "address" => 'required|string',
