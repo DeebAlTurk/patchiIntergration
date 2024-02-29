@@ -161,13 +161,21 @@ class OrderEditScreen extends Screen
                    break;
            }
 
+           $orders->fill($data);
+           $orders->save();
 
            //Check Status for Status Logging
            $orderStatusNew = $orders->orderStatuses()->where('status', $data['status'])->get();
+
            if ($orderStatusNew->isEmpty()) {
+               if ($data['status']!=='Open'){
+                   $supervisor= $orders?->supervisor;
+               }else{
+                   $supervisor= $data['status'];
+               }
                $orderStatusNew = $orders->orderStatuses()->create([
                    'status' => $data['status'],
-                   'supervisor' => $orders->supervisor
+                   'supervisor' => $supervisor
                ]);
                \Mail::to($orders->city->primary_email)->cc($orders->city->getCCEmails())->send(new OrderUpdated(route('platform.orders.edit', $orders)));
 
@@ -175,8 +183,6 @@ class OrderEditScreen extends Screen
 
        }
 
-       $orders->fill($data);
-       $orders->save();
         Toast::info(__('Order was saved.'));
 
         return redirect()->route('platform.orders.list');
