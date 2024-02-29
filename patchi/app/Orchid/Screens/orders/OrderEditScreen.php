@@ -82,7 +82,7 @@ class OrderEditScreen extends Screen
             Button::make(__('Remove'))
                 ->icon('trash')
                 ->confirm('this will delete the order permanently')
-//                ->method('remove')
+                ->method('remove')
                 ->canSee($this->order->exists),
 
             Button::make(__('Save'))
@@ -186,5 +186,12 @@ class OrderEditScreen extends Screen
         Toast::info(__('Order was saved.'));
 
         return redirect()->route('platform.orders.list');
+    }
+    public function remove(Orders $orders){
+        if ($orders->delete()){
+            Toast::info(__('Order was deleted successfully.'));
+            return redirect()->route('platform.orders.list');
+
+        }
     }
 }
