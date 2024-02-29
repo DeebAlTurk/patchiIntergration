@@ -88,7 +88,7 @@ class Orders extends Model
     }
     public function validateSMS(string $input){
         $latestSMS=$this->LatestSmsCode();
-        if ($input === $latestSMS->code) {
+        if ($input === $latestSMS?->code) {
             return $this->update(['sms_code_confirmation'=>true]);
         }
         return false;
