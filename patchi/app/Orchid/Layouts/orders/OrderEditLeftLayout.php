@@ -36,7 +36,7 @@ class OrderEditLeftLayout extends Rows
             Input::make('order.receiver_name')->title("Receiver's Name")
                 ->required()->placeholder("please enter the Receiver's Name"),
             Input::make('order.phone_number')->title("Receiver's Phone Number")
-                ->required()->placeholder("please enter the Receiver's Phone number"),
+                ->required()->placeholder("966xxxxxxxx"),
             Select::make('order.district_id')
                 ->fromModel(District::class, 'name')
                 ->title('District')->required()
