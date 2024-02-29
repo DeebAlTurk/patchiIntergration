@@ -120,12 +120,12 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Orders $order)
     {
-        if ($order->status==='Invalid'&&$request->user()->id===$order->user_id){
+        if ($order->status==='Invalid'&&$request->user()->id==$order->user_id){
             $data = $request->validate(
                 [
                     "policy_number"=>'string|min:1',
                     "receiver_name" => 'string|min:1',
-                    "phone_number" => ['string','min:1','regex:/^(?:\+966|00966|0)(5\d(?:\s?\d){7})$/'],
+                    "phone_number" => ['required', 'string', 'min:1', 'regex:/^(?:966|00966|0)(5\d(?:\s?\d){7})$/'],
                     "city_id" => 'exists:cities,id',
                     "address" => 'string',
                     "comment" => 'string',
@@ -135,7 +135,7 @@ class OrdersController extends Controller
             $order->update($data);
             if ($order->wasChanged()){
                 $order->update(['status'=>'Open']);
-                \Mail::to($order->city->primary_email)->cc($order->city->getCCEmails())->send(new OrderUpdated(route('voyager.orders.show', $order)));
+                \Mail::to($order->city->primary_email)->cc($order->city->getCCEmails())->send(new OrderUpdated(route('platform.orders.edit', $order)));
             }
         }
         return redirect()->route('dashboard');
